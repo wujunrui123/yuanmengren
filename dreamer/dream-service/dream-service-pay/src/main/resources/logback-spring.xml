@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="5 seconds">
+    <springProperty scope="context" name="logPath" source="logging.path" defaultValue="../../log"/>
+    <property name="appName" value="dream-service-pay"/>
+    <contextName>dream-service-pay</contextName>
+    <!--格式化输出：
+            %d表示日期|%-5level：级别从左显示5个字符宽度%|appName:项目名，X-B3-TraceId: 一条链路唯一的ID, X-B3-SpanId 链路中每一环的ID, X-Span-Export:是否是发送给Zipkin|%thread表示线程名|ClassName|msg：日志消息，%n是换行符-->
+    <property name="log.pattern"
+              value="%cyan(%d)|%highlight(%level)|${appName},%X{X-B3-TraceId},%X{X-B3-SpanId},%X{X-Span-Export}|%yellow(%thread)|%blue(%logger{36}:%line)|%msg%n" />
+
+    <!--没有颜色-->
+    <property name="FILE_LOG_PATTERN"
+              value="%d|%level|${moduleName},%X{X-B3-TraceId},%X{X-B3-SpanId},%X{X-Span-Export}|%thread|%logger{36}:%line|%msg%n"/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+    <!-- 按照每天生成日志文件 -->
+    <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logPath}/${appName}.log</file>
+
+        <!-- 日志输出编码 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志输出文件名 -->
+            <fileNamePattern>${logPath}/${appName}.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <!-- 日志保存的最大时间 -->
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <!-- 格式化输出 -->
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 在程序的开发测试阶段，可以调整level的级别，常用级别优先级为： -->
+    <!-- TRACE < DEBUG < INFO < WARN < ERROR  -->
+    <logger name="org.springframework.boot"  level="WARN"/>
+
+    <springProfile name="dev">
+        <logger name="root" level="INFO" additivity="false">
+            <appender-ref ref="console"/>
+            <appender-ref ref="rollingFile" />
+        </logger>
+    </springProfile>
+    <springProfile name="test">
+        <logger name="root" level="INFO" additivity="false">
+            <appender-ref ref="console"/>
+            <appender-ref ref="rollingFile" />
+        </logger>
+    </springProfile>
+    <springProfile name="pro">
+        <logger name="root" level="INFO" additivity="false">
+            <appender-ref ref="console"/>
+            <appender-ref ref="rollingFile" />
+        </logger>
+    </springProfile>
+
+</configuration>

@@ -1,0 +1,34 @@
+server:
+  port: 9081
+  servlet:
+    context-path: /backstage
+
+spring:
+  application:
+    name: dream-client-backstage
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: 4494687c-2666-4064-b4d7-cfa6d16c49f2
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        shared-dataids: dream-client-backstage.yml
+        namespace: 4494687c-2666-4064-b4d7-cfa6d16c49f2
+        group: client
+
+dubbo:
+  registry:
+    address: spring-cloud://localhost
+  cloud:
+    subscribed-services: dream-service-user
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

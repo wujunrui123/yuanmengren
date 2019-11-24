@@ -1,0 +1,57 @@
+server:
+  port: 8081
+
+dubbo:
+  scan:
+    base-packages: com.tx.dreamer.service.*.impl
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: spring-cloud://localhost
+spring:
+  application:
+    name: dream-service-user
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: 4494687c-2666-4064-b4d7-cfa6d16c49f2
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        group: Dreamer
+        namespace: 4494687c-2666-4064-b4d7-cfa6d16c49f2
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://119.3.66.33:3306/DreamerDB?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 21
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      validation-query-timeout: 2
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: false
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat,wall
+      connection-properties: 'druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000'
+      web-stat-filter:
+        url-pattern: '/*'
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+      stat-view-servlet:
+        login-username: root
+        login-password: root
+        reset-enable: false
