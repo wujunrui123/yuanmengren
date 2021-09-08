@@ -14,7 +14,7 @@
         <hutool.version>4.5.11</hutool.version>
         <guava.version>20.0</guava.version>
         <lombok-version>1.16.22</lombok-version>
-        <dubbo.version>2.7.1</dubbo.version>
+        <dubbo.version>2.7.13</dubbo.version>
         <mybatis-plus.version>3.2.0</mybatis-plus.version>
         <framework-common.version>0.0.1-SNAPSHOT</framework-common.version>
     </properties>
